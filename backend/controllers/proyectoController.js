@@ -1,4 +1,5 @@
 import Proyecto from "../models/Proyecto.js"
+import Tarea from "../models/Tarea.js"
 
 // Obtener un proyecto
 const obtenerProyectos = async (req, res) =>{
@@ -8,7 +9,7 @@ const obtenerProyectos = async (req, res) =>{
     res.json(proyectos) // respuesta json
 }
 
-// Crear NUevo proyecto
+// Crear Nuevo proyecto
 const nuevoProyecto = async (req, res) =>{
     const proyecto = new Proyecto(req.body) // Nuevo proyecto
     proyecto.creador = req.usuario._id // creador
@@ -39,7 +40,12 @@ const obtenerProyecto = async (req, res) =>{
         return res.status(404).json({msg: error.message})
     }
 
-    res.json(proyecto)
+    // Obtener las tareas asociadas al proyecto (solo pueden el creador y/o los colaboradores)
+    const tareas = await Tarea.find().where('proyecto').equals(id)
+    res.json({
+        proyecto,
+        tareas,
+    })
 }
 
 // Editar Proyecto
@@ -102,30 +108,29 @@ const eliminarProyecto = async (req, res) =>{
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const agregarColaborador = async (req, res) =>{
     
 }
 const eliminarColaborador = async (req, res) =>{
     
 }
-const obtenerTareas = async (req, res) =>{
-    
-}
+// const obtenerTareas = async (req, res) =>{
+//     Primero se consulta al proyecto y luego las tareas
+//     const { id } = req.params
+
+//     Buscar el o los proyectos
+//     const existeProyecto = await Proyecto.findById(id)
+
+//     Si no hay proyectos
+//     if (!existeProyecto) {
+//         const error = new Error("No en contrado")
+//         return res.status(404).json({msg: error.message})
+//     }
+
+//      Obtener tareas solo el creador o colaboradores
+//     const tareas = await Tarea.find().where('proyecto').equals(id)
+//     res.json(tareas)
+// }
 
 export{
     obtenerProyectos,
@@ -135,5 +140,4 @@ export{
     eliminarProyecto,
     agregarColaborador,
     eliminarColaborador,
-    obtenerTareas,
 }
