@@ -42,6 +42,7 @@ const obtenerProyecto = async (req, res) =>{
     res.json(proyecto)
 }
 
+// Editar Proyecto
 const editarProyecto = async (req, res) =>{
     const { id } = req.params
     

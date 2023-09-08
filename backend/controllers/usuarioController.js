@@ -71,7 +71,6 @@ const confirmar = async (req, res) => {
     usuarioConfirmar.token = ""; // eliminar token porque es de un solo uso
     await usuarioConfirmar.save(); // Guardar usuario en la DB
     res.json({ msg: "Usuario confirmado correctamente" }); // mensaje success
-    console.log(usuarioConfirmar);
   } catch (error) {
     console.log(error);
   }

@@ -50,6 +50,7 @@ const obtenerTarea = async (req, res) =>{
     res.json(tarea)
 }
 
+// Actualizar un tarea
 const actualizarTarea = async (req, res) =>{
     const { id } = req.params
 
@@ -83,7 +84,34 @@ const actualizarTarea = async (req, res) =>{
     }
 }
 
-const eliminarTarea = async (req, res) =>{}
+// Eliminar un tarea
+const eliminarTarea = async (req, res) =>{
+    const { id } = req.params
+
+    // Buscar la tarea y su creador 
+    const tarea = await Tarea.findById(id).populate("proyecto")
+    
+    // Si no hay tareas
+    if (!tarea) {
+        const error = new Error("Tarea No encontrada") // Alerta
+        return res.status(404).json({msg: error.message})
+    }
+
+    // Si el creador del proyecto es diferente al del usuario 
+    if (tarea.proyecto.creador.toString() !== req.usuario._id.toString()) {
+        const error = new Error("Acción No Válida") // Alerta
+        return res.status(403).json({msg: error.message})
+    }
+
+    // Control del flujo - Manejo de errores
+    try {
+        await tarea.deleteOne()
+        const error = new Error("Tarea Eliminada") // Alerta
+        return res.status(404).json({msg: error.message})
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 const cambiarEstado = async (req, res) =>{}
 
