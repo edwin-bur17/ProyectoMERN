@@ -1,9 +1,12 @@
 
 const ConfirmarCuenta = () => {
   return (
-    <div>
-      <h1 className="text-center text-blue-700 font-semibold">Confirmar la cuenta </h1>
-    </div>
+    <>
+      <h1 className="text-sky-600 font-black text-4xl text-center capitalize">Confirma tu cuenta y comienza a crear  tus {' '}
+        <span className="text-slate-700">proyectos</span>
+      </h1>
+
+    </>
   )
 }
 

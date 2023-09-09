@@ -39,7 +39,7 @@ const Login = () => {
 
         {/* boton iniciar sesión */}
         <input
-          className="w-full mb-5 border-solid border-2 border-sky-700 text-sky-700 font-bold text-xl rounded-full py-3 cursor-pointer transition-all duration-300 hover:bg-sky-700 hover:text-white"
+          className="w-full mb-5 mt-9 border-solid border-2 border-sky-700 text-sky-700 font-bold text-xl rounded-full py-3 cursor-pointer transition-all duration-300 hover:bg-sky-700 hover:text-white"
           type="submit"
           value="Iniciar Sesión"
         />
@@ -56,7 +56,7 @@ const Login = () => {
       <nav className="lg:flex lg:justify-between">
         <Link
           className='block text-center my-5 text-slate-500 text-base'
-          to='registrar'>
+          to='/registrar'>
           ¿No tienes una cuenta? {' '}
           <span className="text-sky-700 font-semibold hover:border-b-4 border-sky-700">
             Registrate aquí
@@ -66,7 +66,7 @@ const Login = () => {
         {/* link para recuperar contraseña */}
         <Link
           className='block text-center my-5 text-slate-700 font-semibold hover:border-b-4 border-slate-700'
-          to='olvide-password'>
+          to='/olvide-password'>
           Olvidé mi contraseña 
         </Link>
       </nav>
