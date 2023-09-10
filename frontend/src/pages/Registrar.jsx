@@ -1,15 +1,76 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
+import Alerta from "../components/Alerta"
+import axios from "axios"
+
+
+// Nota: axios se utiliza para cominicarse con la api
 
 const Registrar = () => {
+  // Inicializar (definir) variables para registrar usuario
+  const [nombre, setNombre] = useState('') // Nombre usuario
+  const [email, setEmail] = useState('') // Correo electronico
+  const [password, setPassword] = useState('') // Contraseña
+  const [repetirPassword, setRepetirPassword] = useState('') // Repetir contraseña
+  const [alerta, setAlerta] = useState({}) // Alerta
+
+  // Envio del formulario
+  const handleSubmit = async e => {
+    e.preventDefault()
+    // Validación de los campos
+    if ([nombre, email, password, repetirPassword].includes('')) {
+      setAlerta({
+        msg: 'Alerta: Todos los campos son obligatorios',
+        error: true
+      })
+      return
+    }
+    // Validación contraseña
+    if (password !== repetirPassword) {
+      setAlerta({
+        msg: 'Alerta: Las contraseñas no son iguales ',
+        error: true
+      })
+    }
+    // Validación longitud de la contraseña
+    if (password.length < 8) {
+      setAlerta({
+        msg: 'Alerta: La contraseña es muy corta, debe contener mínimo 8 carácteres ',
+        error: true
+      })
+    }
+    setAlerta({})
+
+    // ------ Crear el usuario en la api ------
+    // Control del flujo -  manejo de errores
+    try {
+      const { data } = await axios.post('http://localhost:4000/api/usuarios', {nombre, email, password})
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+    } catch (error) {
+      // Alerta usuario ya existe
+      setAlerta({
+        msg: error.response.data.msg, 
+        error: true
+      })
+    }
+  }
+  // Mensaje de la alerta 
+  const { msg } = alerta
+
   return (
     <div>
       <>
         <h1 className="text-sky-600 font-black text-4xl text-center capitalize">Registrate y administra tus {' '}
           <span className="text-slate-700">proyectos</span>
         </h1>
-
+        {msg && <Alerta alerta={alerta} />}
         {/* inicia formulario registro usuario */}
-        <form className="my-10 bg-white shadow rounded-xl p-10 ">
+        <form
+          className="my-10 bg-white shadow rounded-xl p-10"
+          onSubmit={handleSubmit}> {/* envio de formulario */}
           {/* Nombre usuario*/}
           <div className="my-5">
             <label
@@ -20,6 +81,8 @@ const Registrar = () => {
             <input
               type="text"
               id="nombre"
+              value={nombre}
+              onChange={e => setNombre(e.target.value)}
               className="w-full mt-2 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700"
               placeholder="Digita tu nombre" />
           </div>
@@ -34,6 +97,8 @@ const Registrar = () => {
             <input
               type="email"
               id="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               className="w-full mt-2 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700"
               placeholder="Digita tu correo electrónico" />
           </div>
@@ -48,6 +113,8 @@ const Registrar = () => {
             <input
               type="password"
               id="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               className="w-full mt-2 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700"
               placeholder="Digita tu contraseña" />
           </div>
@@ -62,6 +129,8 @@ const Registrar = () => {
             <input
               type="password"
               id="password2"
+              value={repetirPassword}
+              onChange={e => setRepetirPassword(e.target.value)}
               className="w-full mt-2 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700"
               placeholder="Digita tu contraseña" />
           </div>
