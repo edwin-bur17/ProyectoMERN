@@ -1,6 +1,7 @@
 import Usuario from "../models/Usuario.js";
 import generarId from "../helpers/generarId.js";
 import generarJWT from "../helpers/generar.JWT.js";
+import { emailRegistro } from "../helpers/email.js";
 
 const registrar = async (req, res) => {
   // Evitar registro duplicados
@@ -8,7 +9,8 @@ const registrar = async (req, res) => {
   const existeUsuario = await Usuario.findOne({ email }); // Trae el usuario que coincida con el nuevo correo
   if (existeUsuario) {
     // si el usuario ya existe hacer:
-    const error = new Error("Error: Usuario ya existe, revisa tus datos e intenta nuevamente.");
+    // const error = new Error(`Error: Ya existe un usuario con el correo: ${email}`);
+    const error = new Error("Ya existe un usuario con este correo, revisa tus datos he intenta nuevamente");
     return res.status(400).json({ msg: error.message });
   }
 
@@ -17,6 +19,14 @@ const registrar = async (req, res) => {
     const usuario = new Usuario(req.body);
     usuario.token = generarId();
     await usuario.save(); // Guardar el nuevo registro (usuario)
+
+    // Enviar el email de confirmación
+    emailRegistro({
+      email: usuario.email,
+      nombre: usuario.nombre,
+      token: usuario.token
+    })
+    
     res.json({msg: 'Registro exitoso, revisa tu correo electrónico para confirmar tu cuenta.'}); // Alerta de registro exitoso
   } catch (error) {
     console.log(error);
@@ -76,7 +86,7 @@ const confirmar = async (req, res) => {
   }
 };
 
-// Enviar nueco token para recuperar contraseña
+// Enviar nuevo token para recuperar contraseña
 const olvidePassword = async (req, res) => {
   const { email } = req.body;
 

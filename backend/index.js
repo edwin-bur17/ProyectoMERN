@@ -15,7 +15,8 @@ dotenv.config();
 conectarDB();
 
 // Configurar CORS
-const whiteList = ["http://localhost:5173", "http://127.0.0.1:5173"] // Lista blanca: para recibir peticiones de este dominio
+// Lista blanca: para recibir peticiones de este dominio
+const whiteList = [process.env.FRONTEND_URL] 
 
 const corsOptions = {
     origin: function(origin, callback){
