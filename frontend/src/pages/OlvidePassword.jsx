@@ -20,6 +20,7 @@ const OlvidePassword = () => {
     }
     // Control del flujo - manejo de errores
     try {
+      // TODO: Mover hacia un cliente axios
       // Hacer la petición (post)
       const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password`, { email })
       setAlerta({
