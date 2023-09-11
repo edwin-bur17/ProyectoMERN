@@ -9,13 +9,13 @@ const registrar = async (req, res) => {
   const existeUsuario = await Usuario.findOne({ email }); // Trae el usuario que coincida con el nuevo correo
   if (existeUsuario) {
     // si el usuario ya existe hacer:
-    // const error = new Error(`Error: Ya existe un usuario con el correo: ${email}`);
-    const error = new Error("Ya existe un usuario con este correo, revisa tus datos he intenta nuevamente");
+    const error = new Error(`Ya existe un usuario con el correo: ${email}, revisa tus datos he intenta nuevamente.`);
+    //const error = new Error("Ya existe un usuario con este correo, revisa tus datos he intenta nuevamente");
     return res.status(400).json({ msg: error.message });
   }
 
   try {
-    // Insertar nuevo usuario, es decir el objeto que viene del formulario, en este caso de postman
+    // Insertar nuevo usuario, es decir el objeto que viene del formulario
     const usuario = new Usuario(req.body);
     usuario.token = generarId();
     await usuario.save(); // Guardar el nuevo registro (usuario)
@@ -79,7 +79,7 @@ const confirmar = async (req, res) => {
   try {
     usuarioConfirmar.confirmado = true;
     usuarioConfirmar.token = ""; // eliminar token porque es de un solo uso
-    await usuarioConfirmar.save(); // Guardar usuario en la DB
+    await usuarioConfirmar.save(); // Confirmar usuario en la DB
     res.json({ msg: "Usuario confirmado correctamente" }); // mensaje success
   } catch (error) {
     console.log(error);
@@ -93,7 +93,7 @@ const olvidePassword = async (req, res) => {
   const usuario = await Usuario.findOne({ email });
 
   if (!usuario) {
-    const error = new Error("El Usuario no existe");
+    const error = new Error("El usuario no existe, verifica tu correo e intenta nuevamente.");
     return res.status(404).json({ msg: error.message });
   }
 

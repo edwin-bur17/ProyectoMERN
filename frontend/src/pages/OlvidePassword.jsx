@@ -1,14 +1,52 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
+import Alerta from "../components/Alerta"
+import axios from "axios"
 
 const OlvidePassword = () => {
+  const [email, setEmail] = useState('') // Correo electrónico
+  const [alerta, setAlerta] = useState({}) // Alerta
+
+  // Envio del formulario
+  const handleSubmit = async e => {
+    e.preventDefault()
+    // Validación del formulario
+    if (email === '' || email.length < 6) {
+      setAlerta({
+        msg: 'El correo electrónico es obligatorio',
+        error: true
+      })
+      return
+    }
+    // Control del flujo - manejo de errores
+    try {
+      // Hacer la petición (post)
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password`, { email })
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true
+      })
+    }
+  }
+
+  // Extraer el mensaje
+  const { msg } = alerta
+
   return (
     <>
       <h1 className="text-sky-600 font-black text-4xl text-center capitalize">Recupera tu cuenta y no pierdas tus {' '}
         <span className="text-slate-700">proyectos</span>
       </h1>
-
+      {msg && <Alerta alerta={alerta} />}
       {/* inicia formulario olvide contraseña */}
-      <form className="my-10 bg-white shadow rounded-xl p-10 ">
+      <form
+        className="my-10 bg-white shadow rounded-xl p-10 "
+        onSubmit={handleSubmit}>
         {/* Email */}
         <div className="my-5">
           <label
@@ -19,6 +57,8 @@ const OlvidePassword = () => {
           <input
             type="email"
             id="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             className="w-full mt-2 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700"
             placeholder="Digita tu correo electrónico" />
         </div>
