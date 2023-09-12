@@ -2,11 +2,14 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Alerta from "../components/Alerta";
+import clienteAxios from "../config/clienteAxios";
+
 
 const NuevoPassword = () => {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); // contraseña
   const [tokenValido, setTokenValido] = useState(false); // token valido
   const [alerta, setAlerta] = useState({}); // Alerta
+  const [passwordModificado, setPasswordModificado] = useState(false) // Nueva contraseña
   const params = useParams(); // Leer el token de la url
   const { token } = params; // almacenar el token de la url
 
@@ -14,10 +17,7 @@ const NuevoPassword = () => {
   useEffect(() => {
     const comprobarToken = async () => {
       try {
-        // TODO: Mover hacia un cliente axios
-        const { data } = await axios(
-          `http://localhost:4000/api/usuarios/olvide-password/${token}`
-        ); // hacer la peticion
+        await clienteAxios(`/usuarios/olvide-password/${token}`); // hacer la peticion
         setTokenValido(true);
       } catch (error) {
         setAlerta({
@@ -31,7 +31,7 @@ const NuevoPassword = () => {
   // Extraer mensaje de la alerta
   const { msg } = alerta;
 
-  // Envio del formulario
+  // Envio del formulario nueva contraseña
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,12 +46,13 @@ const NuevoPassword = () => {
 
     // Manejo de exepciones- control del flujo
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password/${token}` // hacer la petición
-      const { data } = await axios.post(url, { password })
+      const url = `/usuarios/olvide-password/${token}` // hacer la petición
+      const { data } = await clienteAxios.post(url, { password })
       setAlerta({ // Alerta contraseña creada exitosamente
         msg: data.msg,
         error: false,
       });
+      setPasswordModificado(true)
     } catch (error) {
       setAlerta({ // Alerta token no valido
         msg: error.response.data.msg,
@@ -95,6 +96,17 @@ const NuevoPassword = () => {
           />
         </form>
       )}
+      {passwordModificado && (
+        <Link
+          className='block text-center my-5 text-slate-500 text-lg'
+          to='/'>
+          ¿Ya reestableciste tu contraseña? {' '}
+          <span className="text-sky-700 font-semibold hover:border-b-4 border-sky-700">
+            Inicia sesión aquí
+          </span>
+        </Link>
+      )
+      }
     </>
   );
 };
