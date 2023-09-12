@@ -33,7 +33,7 @@ const registrar = async (req, res) => {
     console.log(error);
   }
 };
-// Autenticación del usuario
+// Autenticación del usuario - iniciar sesión
 const autenticar = async (req, res) => {
   const { email, password } = req.body;
 

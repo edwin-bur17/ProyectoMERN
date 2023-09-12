@@ -2,28 +2,50 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Alerta from "../components/Alerta"
 import clienteAxios from "../config/clienteAxios";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [email, setEmail] = useState('') // Correo electrónico
   const [password, setPassword] = useState('') // Contraseña
   const [alerta, setAlerta] = useState({}) // Alerta
 
+  const { setAuth } = useAuth() // Autentificación del usuario
+
+  // Envio del formulario login
   const handleSubmit = async e => {
     e.preventDefault()
 
+    // Validación
     if ([email, password].includes('')) {
       setAlerta({
         msg: 'Todos los campos son obligatorios',
         error: true
       })
+      return
+    }
+    // Control de errores - manejo de exepciones
+    try {
+      const { data } =await clienteAxios.post('/usuarios/login', {email, password})
+      setAlerta({})
+      localStorage.setItem('token', data.token) // Guardar el token em localstorage
+      setAuth(data)
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg, // Alerta de error
+        error: true
+      })
     }
   }
+  // Extarer la alerta
+  const { msg } = alerta
 
   return (
     <>
       <h1 className="text-sky-600 font-black text-4xl text-center capitalize">Inicia sesión y administra tus {' '}
         <span className="text-slate-700">proyectos</span>
       </h1>
+
+      {msg && <Alerta alerta={alerta}/> } 
 
       {/* inicia formulario login */}
       <form 
@@ -82,14 +104,14 @@ const Login = () => {
           className='block text-center my-5 text-slate-500 text-base'
           to='/registrar'>
           ¿No tienes una cuenta? {' '}
-          <span className="text-sky-700 font-semibold hover:border-b-4 border-sky-700">
+          <span className="text-sky-600 font-semibold hover:text-sky-800">
             Registrate aquí
           </span>
         </Link>
 
         {/* link para recuperar contraseña */}
         <Link
-          className='block text-center my-5 text-slate-700 font-semibold hover:border-b-4 border-slate-700'
+          className='block text-center my-5 text-slate-500 font-semibold hover:text-slate-700  '
           to='/olvide-password'>
           Olvidé mi contraseña 
         </Link>
