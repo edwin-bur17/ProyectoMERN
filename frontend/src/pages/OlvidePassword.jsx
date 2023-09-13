@@ -17,6 +17,10 @@ const OlvidePassword = () => {
         msg: 'El correo electrónico es obligatorio',
         error: true
       })
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
       return
     }
     // Control del flujo - manejo de errores
@@ -32,6 +36,10 @@ const OlvidePassword = () => {
         msg: error.response.data.msg,
         error: true
       })
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
     }
   }
 

@@ -21,7 +21,12 @@ const Login = () => {
       setAlerta({
         msg: 'Todos los campos son obligatorios',
         error: true
+        
       })
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
       return
     }
     // Control de errores - manejo de exepciones

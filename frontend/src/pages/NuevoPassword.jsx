@@ -4,12 +4,11 @@ import { useState, useEffect } from "react";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/clienteAxios";
 
-
 const NuevoPassword = () => {
   const [password, setPassword] = useState(""); // contraseña
   const [tokenValido, setTokenValido] = useState(false); // token valido
   const [alerta, setAlerta] = useState({}); // Alerta
-  const [passwordModificado, setPasswordModificado] = useState(false) // Nueva contraseña
+  const [passwordModificado, setPasswordModificado] = useState(false); // Nueva contraseña
   const params = useParams(); // Leer el token de la url
   const { token } = params; // almacenar el token de la url
 
@@ -24,6 +23,10 @@ const NuevoPassword = () => {
           msg: error.response.data.msg,
           error: true,
         });
+        // Quitar la alerta
+        setTimeout(() => {
+          setAlerta({});
+        }, 5000);
       }
     };
     comprobarToken();
@@ -41,23 +44,37 @@ const NuevoPassword = () => {
         msg: "La contraseña debe contener mínimo 8 caracteres.",
         error: true,
       });
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
       return;
     }
 
     // Manejo de exepciones- control del flujo
     try {
-      const url = `/usuarios/olvide-password/${token}` // hacer la petición
-      const { data } = await clienteAxios.post(url, { password })
-      setAlerta({ // Alerta contraseña creada exitosamente
+      const url = `/usuarios/olvide-password/${token}`; // hacer la petición
+      const { data } = await clienteAxios.post(url, { password });
+      setAlerta({
+        // Alerta contraseña creada exitosamente
         msg: data.msg,
         error: false,
       });
-      setPasswordModificado(true)
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
+      setPasswordModificado(true);
     } catch (error) {
-      setAlerta({ // Alerta token no valido
+      setAlerta({
+        // Alerta token no valido
         msg: error.response.data.msg,
         error: true,
       });
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
     }
   };
 
@@ -97,16 +114,13 @@ const NuevoPassword = () => {
         </form>
       )}
       {passwordModificado && (
-        <Link
-          className='block text-center my-5 text-slate-500 text-lg'
-          to='/'>
-          ¿Ya reestableciste tu contraseña? {' '}
+        <Link className="block text-center my-5 text-slate-500 text-lg" to="/">
+          ¿Ya reestableciste tu contraseña?{" "}
           <span className="text-sky-700 font-semibold hover:border-b-4 border-sky-700">
             Inicia sesión aquí
           </span>
         </Link>
-      )
-      }
+      )}
     </>
   );
 };

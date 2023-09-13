@@ -24,6 +24,10 @@ const Registrar = () => {
         msg: 'Alerta: Todos los campos son obligatorios',
         error: true
       })
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
       return
     }
     // Validación contraseña
@@ -32,6 +36,10 @@ const Registrar = () => {
         msg: 'Alerta: Las contraseñas no son iguales ',
         error: true
       })
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
     }
     // Validación longitud de la contraseña
     if (password.length < 8) {
@@ -39,6 +47,10 @@ const Registrar = () => {
         msg: 'Alerta: La contraseña es muy corta, debe contener mínimo 8 carácteres ',
         error: true
       })
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
     }
     setAlerta({})
 
@@ -50,6 +62,10 @@ const Registrar = () => {
         msg: data.msg,
         error: false
       })
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
       // Limpiar formulario
       setNombre('')
       setEmail('')
@@ -61,6 +77,10 @@ const Registrar = () => {
         msg: error.response.data.msg, 
         error: true
       })
+      // Quitar la alerta
+      setTimeout(() => {
+        setAlerta({})
+      }, 5000)
     }
   }
   // Mensaje de la alerta 
