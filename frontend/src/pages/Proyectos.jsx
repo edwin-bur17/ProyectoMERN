@@ -2,9 +2,9 @@
 
 const Proyectos = () => {
   return (
-    <div>
-      <h1 className="text-center text-blue-500">Desde los proyectos</h1>
-    </div>
+    <>
+      <h1 className="text-center text-4xl text-blue-500 font-semibold">Proyectos</h1>
+    </>
   )
 }
 
