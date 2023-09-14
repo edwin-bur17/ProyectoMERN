@@ -1,29 +1,45 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const PreviewProyecto = ({ proyecto }) => {
-    // Extraer la información
-    const { nombre, _id, cliente } = proyecto
-    return (
-        <div className="bg-white shadow-lg rounded-xl overflow-hidden">
-            <div className="p-4">
-                <h2 className="text-2xl font-semibold text-gray-800 text-center">{nombre}</h2>
-                <p className="text-gray-600 mt-2">Descripción breve del proyecto.</p>
-                <div className="mt-3">
-                    <span className="text-gray-600">Cliente:</span>
-                    <p className="text-sky-600">{cliente}</p>
-                </div>
-                <div className="mt-3 mb-5">
-                    <span className="text-gray-600">Fecha de Creación:</span>
-                    <p className="text-sky-600">12 de Septiembre, 2023</p>
-                </div>
-                <Link 
-                to={`${_id}`}
-                className="cursor-pointer  bg-sky-600 text-white py-2 px-4 rounded-full hover:bg-sky-700 focus:outline-none focus:ring focus:ring-sky-400">
-                    Ver proyecto
-                </Link>
-            </div>
-        </div>
-    )
-}
+  // Extraer la información
+  const { nombre, _id, cliente } = proyecto;
+  return (
+    <div class="max-w-sm p-6 bg-white rounded-xl shadow overflow-hidden hover:bg-gray-50 hover:border-sky-600 border border-gray-100">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+          {nombre}
+        </h5>
+      <p className="mb-3 font-normal text-gray-700">
+        Here are the biggest enterprise technology acquisitions of 2021 so far,
+        in reverse chronological order.
+      </p>
+      <div className="mt-3 mb-5">
+        <span className="text-gray-600">Fecha de Creación:</span>
+        <p className="text-sky-600">12 de Septiembre, 2023</p>
+        
+      </div>
+      <Link
+        to={`${_id}`}
+        className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-sky-600 rounded-lg hover:bg-sky-700 "
+      >
+        Leer más
+        <svg
+          class="w-3.5 h-3.5 ml-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 14 10"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M1 5h12m0 0L9 1m4 4L9 9"
+          />
+        </svg>
+      </Link>
+    </div>
+  );
+};
 
-export default PreviewProyecto
+export default PreviewProyecto;

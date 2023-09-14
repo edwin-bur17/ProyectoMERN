@@ -6,7 +6,7 @@ const Header = () => {
       <div className="md:flex md:justify-between">
         <h2 className="text-4xl text-sky-600 font-black text-center">UpTask</h2>
 
-{/* inicio barra de busqueda */}
+        {/* inicio barra de busqueda */}
         <form className="lg:w-96 block">
           <label
             htmlFor="default-search"
@@ -47,17 +47,32 @@ const Header = () => {
             </button>
           </div>
         </form>
-{/* fin barra de busqueda */}
+        {/* fin barra de busqueda */}
 
         <div className="flex items-center gap-4">
           <Link to="/proyectos" className="font-bold text-lg">
-            Proyectos
+           Mis proyectos
           </Link>
           <button
             type="button"
-            className="text-white text-lg bg-sky-600 p-3 hover:bg-sky-700 rounded-full font-bold"
+            className="text-white text-lg bg-sky-600 p-3 hover:bg-sky-700 rounded-full font-bold flex items-center"
           >
-            Cerrar sesión
+            <svg
+              className="w-6 h-6 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 18 15"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 7.5h11m0 0L8 3.786M12 7.5l-4 3.714M12 1h3c.53 0 1.04.196 1.414.544.375.348.586.82.586 1.313v9.286c0 .492-.21.965-.586 1.313A2.081 2.081 0 0 1 15 14h-3"
+              />
+            </svg>
+            <span className="mx-2">Cerrar sesión</span>
           </button>
         </div>
       </div>
