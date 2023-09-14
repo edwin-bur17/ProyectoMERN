@@ -3,15 +3,17 @@ import useProyectos from "../hooks/useProyectos"
 import Alerta from "./Alerta"
 
 const FormularioProyecto = () => {
+  const [id, setId] = useState(null) // Id proyecto
   const [nombre, setNombre] = useState('') // Nombre proyecto
   const [descripcion, setDescripcion] = useState('') // Descripcion proyecto
   const [fechaEntrega, setFechaEntrega] = useState('') // Fecha entrega proyecto
   const [cliente, setCliente] = useState('') // Cliente proyecto
 
-  const {mostrarAlerta, alerta} = useProyectos()
+  // Extraer de ProyectosProvider
+  const {mostrarAlerta, alerta, submitProyecto} = useProyectos()
 
   // Envio del formulario
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
 
     // Validacion
@@ -20,7 +22,14 @@ const FormularioProyecto = () => {
         msg: 'Todos los campos son obligatorios',
         error: true
       })
+      return
     }
+    // Pasar datos hacia el provider
+    await submitProyecto({id, nombre, descripcion, fechaEntrega, cliente})
+    setNombre('')
+    setDescripcion('')
+    setFechaEntrega('')
+    setCliente('')
   }
   // Extraer alerta
   const { msg } = alerta

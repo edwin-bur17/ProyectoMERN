@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
       // Configuracion 
       const config = {
         headers: {
-          "Content-Type": "aplication/json",
+          "Content-Type": "application/json",
            Authorization: `Bearer ${token}`
         },
       };
@@ -31,7 +31,6 @@ const AuthProvider = ({ children }) => {
       try {
         const { data } = await clienteAxios("/usuarios/perfil", config); // Hacer la petición
         setAuth(data)
-        navigate('/proyectos') //  Reedireccionar al usuario luego del login
       } catch (error) {
         setAuth({})
       }

@@ -42,10 +42,7 @@ const obtenerProyecto = async (req, res) =>{
 
     // Obtener las tareas asociadas al proyecto (solo pueden el creador y/o los colaboradores)
     const tareas = await Tarea.find().where('proyecto').equals(id)
-    res.json({
-        proyecto,
-        tareas,
-    })
+    res.json(proyecto)
 }
 
 // Editar Proyecto
