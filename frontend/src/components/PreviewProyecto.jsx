@@ -4,7 +4,7 @@ const PreviewProyecto = ({ proyecto }) => {
   // Extraer la información
   const { nombre, _id, cliente } = proyecto;
   return (
-    <div class="max-w-sm p-6 bg-white rounded-xl shadow overflow-hidden hover:bg-gray-50 hover:border-sky-600 border border-gray-100">
+    <div className="p-6 bg-white rounded-xl overflow-hidden hover:shadow-xl">
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
           {nombre}
         </h5>
@@ -19,11 +19,11 @@ const PreviewProyecto = ({ proyecto }) => {
       </div>
       <Link
         to={`${_id}`}
-        className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-sky-600 rounded-lg hover:bg-sky-700 "
+        className="inline-flex items-center px-3 py-2 text-base font-medium text-center text-white bg-sky-600 rounded-lg hover:bg-sky-700 "
       >
         Leer más
         <svg
-          class="w-3.5 h-3.5 ml-2"
+          className="w-3.5 h-3.5 ml-2"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -7,7 +7,7 @@ const Proyectos = () => {
   return (
     <>
       <h1 className="text-center text-4xl text-sky-600 font-bold">Mis Proyectos</h1>
-      <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {/* itera los proyectos del usuario */}
         {proyectos.length ?
           proyectos.map(proyecto => (

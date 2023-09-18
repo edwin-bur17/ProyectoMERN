@@ -6,7 +6,7 @@ const Sidebar = () => {
   console.log(auth);
   return (
     <aside className="md:w-80 lg:w-90 px-5 py-10">
-      <p className="text-xl font-bold mb-5">Hola, {auth.nombre}</p>
+      <p className="text-xl font-bold mb-5 text-center xl:text-left">Hola, {auth.nombre}</p>
 
       {/* boton nuevo proyecto */}
       <Link
