@@ -11,6 +11,7 @@ const Login = () => {
 
   const { setAuth } = useAuth() // Autentificación del usuario
 
+  const navigate = useNavigate() // Reedirección de las páginas
 
   // Envio del formulario login
   const handleSubmit = async e => {
@@ -35,6 +36,7 @@ const Login = () => {
       setAlerta({})
       localStorage.setItem('token', data.token) // Guardar el token em localstorage
       setAuth(data)
+      navigate('/proyectos') // Reedireccionar a los proyectos si la autentificación es correcta
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg, // Alerta de error
