@@ -6,7 +6,6 @@ const Header = () => {
     <header className="px-4 py-5 bg-white border-b">
       <div className="md:flex md:justify-between">
         <h2 className="text-4xl text-sky-600 font-black text-center">UpTask</h2>
-
         {/* inicio barra de busqueda */}
         <form className="lg:w-96 block">
           <label
@@ -54,8 +53,6 @@ const Header = () => {
           <Link to="/proyectos" className="font-bold text-lg">
            Mis proyectos
           </Link>
-
-          
           <button
             type="button"
             className="text-white text-lg bg-sky-600 p-3 hover:bg-sky-700 rounded-full font-bold flex items-center"

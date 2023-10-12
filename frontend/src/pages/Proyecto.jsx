@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom"
 import useProyectos from "../hooks/useProyectos"
 import Alerta from "../components/Alerta"
 
-// Proyecto (cada proyecto del usuario individualmente)
+// Proyecto ( vista de cada proyecto del usuario individualmente)
 const Proyecto = () => {
   // Obtner el id del proyecto
   const params = useParams()
@@ -49,7 +49,6 @@ const Proyecto = () => {
       <div className="">
         {msg && <Alerta alerta={alerta} />}
       </div>
-
     </div>
   )
 }
