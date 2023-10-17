@@ -42,7 +42,7 @@ const ProyectosProvider = ({ children }) => {
     // Quitar la alerta
     setTimeout(() => {
       setAlerta({})
-    }, 5000)
+    }, 3500)
   }
 
   // Enviar formulario
@@ -171,6 +171,25 @@ const ProyectosProvider = ({ children }) => {
   const handleModalTarea = () =>{
     setModalFormularioTarea(!modalFormularioTarea)
   }
+
+  const submitTarea = async tarea => {
+    try {
+      // Autentificación del token para crear tarea
+      const token = localStorage.getItem('token')
+      if (!token) return
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      const {data} = await clienteAxios.post('/tareas', tarea, config) // Petición a la api
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <ProyectosContext.Provider
       value={{
@@ -184,6 +203,7 @@ const ProyectosProvider = ({ children }) => {
         eliminarProyecto,
         modalFormularioTarea,
         handleModalTarea,
+        submitTarea,
       }}>
       {children}
     </ProyectosContext.Provider>

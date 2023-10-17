@@ -1,6 +1,8 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useProyectos from '../hooks/useProyectos'
+import Alerta from './Alerta'
+import { useParams } from 'react-router-dom'
 
 const PRIORIDAD = ['Baja', 'Media', 'Alta']
 
@@ -10,10 +12,34 @@ const ModalFormularioTarea = () => {
   // variables del formulario crear tarea
   const [nombre, setNombre] = useState('')
   const [descripcion, setDescripcion] = useState('')
+  const [fechaEntrega, setFechaEntrega] = useState('')
   const [prioridad, setPrioridad] = useState('')
 
+  const params = useParams()
+
   // Extraer la lógica para abrir y cerrar la modal
-  const { modalFormularioTarea, handleModalTarea } = useProyectos()
+  const { modalFormularioTarea, handleModalTarea, alerta, mostrarAlerta, submitTarea } = useProyectos()
+
+  // Validación formulario crear tarea
+  const handleSubmit = e => {
+    e.preventDefault();
+  
+    if ([nombre, descripcion, fechaEntrega, prioridad].includes('')) {
+      mostrarAlerta({
+        msg: 'Todos los campos son obligatorios',
+        error: true
+      });
+      return;
+    }
+  
+    // Convierte la fecha a un formato adecuado para enviar al servidor
+    const fechaParaEnviar = new Date(fechaEntrega).toISOString();
+  
+    submitTarea({ nombre, descripcion, fechaEntrega: fechaParaEnviar, prioridad, proyecto: params.id });
+  }
+  
+
+  const { msg } = alerta
 
   return (
     <Transition.Root show={modalFormularioTarea} as={Fragment}>
@@ -69,7 +95,11 @@ const ModalFormularioTarea = () => {
                   <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-gray-900">
                     <h1 className='text-center text-2xl'>Nueva Tarea</h1>
                   </Dialog.Title>
-                  <form className='my-10'>
+                  {msg && <Alerta alerta={alerta} />}
+                  {/* inicio formulario crear tarea */}
+                  <form
+                    onSubmit={handleSubmit}
+                    className='my-10'>
                     <div className="mb-5">
                       <label
                         htmlFor="nombre"
@@ -103,6 +133,20 @@ const ModalFormularioTarea = () => {
 
                     <div className="mb-5">
                       <label
+                        htmlFor="fechaentrega"
+                        className="text-gray-700 font-bold text-base">
+                        Fecha de entrega:
+                      </label>
+                      <input
+                        id='fechaentrega'
+                        type="date"
+                        className="border w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
+                        value={fechaEntrega}
+                        onChange={e => setFechaEntrega(e.target.value)} />
+                    </div>
+
+                    <div className="mb-5">
+                      <label
                         htmlFor="prioridad"
                         className="text-gray-700 font-bold text-base">
                         Prioridad:
@@ -119,11 +163,12 @@ const ModalFormularioTarea = () => {
                         ))}
                       </select>
                     </div>
-                    <input 
-                    type="submit" 
-                    className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white text-lg font-bold cursor-pointer transition-colors rounded-xl"
-                    value="Crear tarea"  />
+                    <input
+                      type="submit"
+                      className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white text-lg font-bold cursor-pointer transition-colors rounded-xl"
+                      value="Crear tarea" />
                   </form>
+                  {/* fin formulario crear tarea */}
                 </div>
               </div>
             </div>

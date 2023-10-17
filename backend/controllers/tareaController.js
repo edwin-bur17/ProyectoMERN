@@ -23,6 +23,9 @@ const agregarTarea = async (req, res) =>{
     // Control del flujo - Manejo de errores
     try {
         const tareaAlmacenada = await Tarea.create(req.body) // crear tarea
+        // Almacenar el id de la tarea
+        existeProyecto.tareas.push(tareaAlmacenada._id)
+        await existeProyecto.save()
         res.json(tareaAlmacenada)
     } catch (error) {
         console.log(error)
