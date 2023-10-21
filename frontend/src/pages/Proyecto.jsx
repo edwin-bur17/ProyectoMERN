@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom"
 import useProyectos from "../hooks/useProyectos"
 import Alerta from "../components/Alerta"
 import ModalFormularioTarea from "../components/ModalFormularioTarea"
+import Tarea from "../components/Tarea"
 
 // Proyecto ( vista de cada proyecto del usuario individualmente)
 const Proyecto = () => {
@@ -10,10 +11,12 @@ const Proyecto = () => {
   const params = useParams()
   const { obtenerProyecto, proyecto, cargando, eliminarProyecto, alerta, handleModalTarea } = useProyectos()
 
+  // Obtener el proyecto
   useEffect(() => {
     obtenerProyecto(params.id)
   }, [])
 
+  // Eliminar proyecto
   const handleClick = () => {
     if (confirm('¿Deseas eliminar este Proyecto? Si eliminas este proyecto no lo podrás recuperar.')) {
       eliminarProyecto(params.id)
@@ -26,6 +29,7 @@ const Proyecto = () => {
   const { msg } = alerta
 
   const { nombre } = proyecto
+
   if (cargando) return 'Cargando...'
   return (
     <>
@@ -68,6 +72,17 @@ const Proyecto = () => {
 
       </div>
       <ModalFormularioTarea />
+      <h3 className="font-semibold text-2xl mt-8">Tareas:</h3>
+      <div className="bg-white shadow mt-8 rounded-xl">
+        {proyecto.tareas?.length ?
+          proyecto.tareas?.map(tarea => (
+            <Tarea
+              key={tarea._id}
+              tarea={tarea}
+            />
+          )) :
+          <p className="text-center my-5 p-10">Aún no hay tareas para este proyecto, <span className="font-bold text-sky-600">empieze agregando una tarea.</span></p>}
+      </div>
     </>
   )
 }

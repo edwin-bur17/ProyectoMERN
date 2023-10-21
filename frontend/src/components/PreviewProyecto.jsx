@@ -1,15 +1,9 @@
+import { formatearFecha } from "../helpers/formatearFecha";
 import { Link } from "react-router-dom";
 
 const PreviewProyecto = ({ proyecto }) => {
   // Extraer la información
   const { nombre, _id, cliente, descripcion, fechaEntrega } = proyecto;
-
-  // Función para formatear la fecha
-  const formatearFecha = (fechaOriginal) => {
-    const fecha = new Date(fechaOriginal);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return fecha.toLocaleDateString('es-ES', options);
-  };
 
   return (
     <Link

@@ -21,7 +21,7 @@ const ModalFormularioTarea = () => {
   const { modalFormularioTarea, handleModalTarea, alerta, mostrarAlerta, submitTarea } = useProyectos()
 
   // Validación formulario crear tarea
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
   
     if ([nombre, descripcion, fechaEntrega, prioridad].includes('')) {
@@ -32,10 +32,13 @@ const ModalFormularioTarea = () => {
       return;
     }
   
-    // Convierte la fecha a un formato adecuado para enviar al servidor
-    const fechaParaEnviar = new Date(fechaEntrega).toISOString();
-  
-    submitTarea({ nombre, descripcion, fechaEntrega: fechaParaEnviar, prioridad, proyecto: params.id });
+    await submitTarea({ nombre, descripcion, fechaEntrega, prioridad, proyecto: params.id });
+
+    // Limpiar formulario
+    setNombre('')
+    setDescripcion('')
+    setFechaEntrega('')
+    setPrioridad('')
   }
   
 

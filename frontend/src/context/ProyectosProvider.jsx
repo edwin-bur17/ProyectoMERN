@@ -172,6 +172,7 @@ const ProyectosProvider = ({ children }) => {
     setModalFormularioTarea(!modalFormularioTarea)
   }
 
+  // Crear tarea
   const submitTarea = async tarea => {
     try {
       // Autentificación del token para crear tarea
@@ -186,6 +187,14 @@ const ProyectosProvider = ({ children }) => {
 
       const {data} = await clienteAxios.post('/tareas', tarea, config) // Petición a la api
       console.log(data)
+
+      // Agregar la tarea al state
+      const proyectoActualizado = {...proyecto}
+      proyectoActualizado.tareas = [...proyecto.tareas, data]
+      setProyecto(proyectoActualizado)
+      setAlerta({})
+      setModalFormularioTarea(false) // Cerrar modal
+
     } catch (error) {
       console.log(error)
     }
