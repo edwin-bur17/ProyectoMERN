@@ -1,17 +1,23 @@
 import { formatearFecha } from '../helpers/formatearFecha'
+import useProyectos from '../hooks/useProyectos'
 
 const Tarea = ({ tarea }) => {
-  const { descripcion, nombre, prioridad, fechaEntrega, estado, _id } = tarea
+  const { handleModalEditarTarea } = useProyectos()
+  const { descripcion, nombre, prioridad, fechaEntrega, estado, createdAt, _id } = tarea
   return (
     <div className='border-b p-5 flex justify-between items-center'>
       <div>
-        <p className="mb-1 text-2xl">{nombre}</p>
-        <p className="mb-1 text-base text-gray-600">{descripcion}</p>
-        <p className="mb-1 text-base text-gray-600">{formatearFecha(fechaEntrega)}</p>
-        <p className="mb-1 text-gray-600">{prioridad}</p>
+        <p className="mb-1 text-2xl"> <span className='text-base text-gray-600'></span>Título: {nombre}</p>
+        <p className="mb-1 text-lg text-black text-semibold">Descripción : <span className='text-base text-gray-600'>{descripcion}</span></p>
+        <p className="mb-1 text-lg text-black text-semibold">Fecha de entrega: <span className='text-base text-gray-600'>{formatearFecha(fechaEntrega)}</span></p>
+        <p className="mb-1 text-lg text-black text-semibold">Prioridad: <span className='text-base text-gray-600'>{prioridad}</span></p>
+        <p className="mb-1 text-lg text-black text-semibold">Fecha de creación: <span className='text-base text-gray-600'>{formatearFecha(createdAt)}</span></p>      
       </div>
       <div className='flex gap-2'>
-        <button className='bg-indigo-600 px-4 py-3 text-white font-bold text-base rounded-lg hover:bg-indigo-700 transition-colors'>
+        <button
+          className='bg-indigo-600 px-4 py-3 text-white font-bold text-base rounded-lg hover:bg-indigo-700 transition-colors'
+          onClick={() => handleModalEditarTarea(tarea)}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
           </svg>

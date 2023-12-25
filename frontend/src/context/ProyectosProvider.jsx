@@ -12,6 +12,7 @@ const ProyectosProvider = ({ children }) => {
   const [proyecto, setProyecto] = useState({}) // Cada proyecto individualmente
   const [cargando, setCargando] = useState(false)
   const [modalFormularioTarea, setModalFormularioTarea] = useState(false)
+  const [tarea, setTarea] = useState({}) // Tarea de cada proyecto
 
   const navigate = useNavigate()
 
@@ -167,13 +168,26 @@ const ProyectosProvider = ({ children }) => {
     }
   }
 
+  // ------------------------------ TAREAS --------------------------------
   // Abrir y cerrar modal
-  const handleModalTarea = () =>{
+  const handleModalTarea = () => {
     setModalFormularioTarea(!modalFormularioTarea)
+    setTarea({})
+  }
+
+  // Envío del formulario (crear/editar tarea)
+  const submitTarea = async tarea => {
+    if (tarea?.id) { // si hay un id entonces editar
+      await editarTarea(tarea)
+    } else { // Si no crear   
+      // Elimina el campo 'id' antes de enviarlo para crear una tarea
+      const { id, ...tareaSinId } = tarea;  // eliminar el id al crear la tarea
+      await crearTarea(tareaSinId)
+    }
   }
 
   // Crear tarea
-  const submitTarea = async tarea => {
+  const crearTarea = async tarea => {
     try {
       // Autentificación del token para crear tarea
       const token = localStorage.getItem('token')
@@ -184,20 +198,46 @@ const ProyectosProvider = ({ children }) => {
           Authorization: `Bearer ${token}`
         }
       }
-
-      const {data} = await clienteAxios.post('/tareas', tarea, config) // Petición a la api
-      console.log(data)
-
+      const { data } = await clienteAxios.post('/tareas', tarea, config) // Petición a la api
       // Agregar la tarea al state
-      const proyectoActualizado = {...proyecto}
+      const proyectoActualizado = { ...proyecto }
       proyectoActualizado.tareas = [...proyecto.tareas, data]
       setProyecto(proyectoActualizado)
       setAlerta({})
       setModalFormularioTarea(false) // Cerrar modal
-
     } catch (error) {
       console.log(error)
     }
+  }
+
+  // Editar Tarea 
+  const editarTarea = async tarea => {
+    try {
+      // Autentificación del token para crear tarea
+      const token = localStorage.getItem('token')
+      if (!token) return
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+      const { data } = await clienteAxios.put(`/tareas/${tarea.id}`, tarea, config)
+      // Actualizar el state
+      const proyectoActualizado = {...proyecto}
+      proyectoActualizado.tareas = proyectoActualizado.tareas.map( tareaState => tareaState._id === data._id ? data : tareaState)
+      setProyecto(proyectoActualizado)
+      setAlerta({})
+      setModalFormularioTarea(false) // Cerrar la modal
+    } catch (error) {
+      console.log("Error al editar tarea - desde el provider: " + error)
+    }
+  }
+
+  // Editar Tarea
+  const handleModalEditarTarea = tarea => {
+    setTarea(tarea) // pasamos la tarea al state
+    setModalFormularioTarea(true) // Abrir modal
   }
   return (
     <ProyectosContext.Provider
@@ -213,6 +253,8 @@ const ProyectosProvider = ({ children }) => {
         modalFormularioTarea,
         handleModalTarea,
         submitTarea,
+        handleModalEditarTarea,
+        tarea,
       }}>
       {children}
     </ProyectosContext.Provider>

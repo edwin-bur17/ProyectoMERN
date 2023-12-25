@@ -8,7 +8,7 @@ const PreviewProyecto = ({ proyecto }) => {
   return (
     <Link
       to={`${_id}`}
-      className="p-6 bg-white rounded-xl overflow-hidden hover:shadow-xl cursor-pointer">
+      className="p-6 bg-white rounded-xl overflow-hidden transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-lg cursor-pointer">
       <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 line-clamp-1">
         {nombre}
       </h5>
