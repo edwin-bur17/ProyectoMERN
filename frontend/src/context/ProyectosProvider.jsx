@@ -13,6 +13,7 @@ const ProyectosProvider = ({ children }) => {
   const [cargando, setCargando] = useState(false)
   const [modalFormularioTarea, setModalFormularioTarea] = useState(false)
   const [tarea, setTarea] = useState({}) // Tarea de cada proyecto
+  const [modalEliminarTarea, setModalEliminarTarea] = useState(false)
 
   const navigate = useNavigate()
 
@@ -224,8 +225,8 @@ const ProyectosProvider = ({ children }) => {
       }
       const { data } = await clienteAxios.put(`/tareas/${tarea.id}`, tarea, config)
       // Actualizar el state
-      const proyectoActualizado = {...proyecto}
-      proyectoActualizado.tareas = proyectoActualizado.tareas.map( tareaState => tareaState._id === data._id ? data : tareaState)
+      const proyectoActualizado = { ...proyecto }
+      proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState)
       setProyecto(proyectoActualizado)
       setAlerta({})
       setModalFormularioTarea(false) // Cerrar la modal
@@ -238,6 +239,43 @@ const ProyectosProvider = ({ children }) => {
   const handleModalEditarTarea = tarea => {
     setTarea(tarea) // pasamos la tarea al state
     setModalFormularioTarea(true) // Abrir modal
+  }
+
+  // Modal (abrir/cerrar) eliminar tarea
+  const handleModalEliminarTarea = tarea => {
+    setTarea(tarea)
+    setModalEliminarTarea(!modalEliminarTarea)
+  }
+
+  // Eliminar tarea
+  const eliminarTarea = async () => {
+    try {
+      // Autentificación del token para crear tarea
+      const token = localStorage.getItem('token')
+      if (!token) return
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+      const { data } = await clienteAxios.delete(`/tareas/${tarea._id}`, config)
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+      // Actualizar el state
+      const proyectoActualizado = { ...proyecto }
+      proyectoActualizado.tareas = proyectoActualizado.tareas.filter(tareaState => tareaState._id !== tarea._id) 
+      setProyecto(proyectoActualizado)
+      setModalEliminarTarea(false) // Cerrar la modal
+      setTarea({})
+      setTimeout(() => { // cerrar la alerta luego de 2 segundos
+        setAlerta({})
+      }, 2000)      
+    } catch (error) {
+      console.log("Error al eliminar tarea - desde el provider: " + error)
+    }
   }
   return (
     <ProyectosContext.Provider
@@ -255,6 +293,9 @@ const ProyectosProvider = ({ children }) => {
         submitTarea,
         handleModalEditarTarea,
         tarea,
+        modalEliminarTarea,
+        handleModalEliminarTarea,
+        eliminarTarea
       }}>
       {children}
     </ProyectosContext.Provider>

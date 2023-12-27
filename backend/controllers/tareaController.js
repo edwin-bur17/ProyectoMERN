@@ -109,8 +109,8 @@ const eliminarTarea = async (req, res) =>{
     // Control del flujo - Manejo de errores
     try {
         await tarea.deleteOne()
-        const error = new Error("Tarea Eliminada") // Alerta
-        return res.status(404).json({msg: error.message})
+        const error = new Error("La tarea ha sido eliminada") // Alerta
+        return res.status(200).json({msg: error.message})
     } catch (error) {
         console.log(error)
     }
